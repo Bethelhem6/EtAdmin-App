@@ -78,7 +78,7 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
         // "orderData": formattedDate,
         "orderId": orderIds,
         'name': name,
-        'orderedDate': orderedDate,
+        'orderData': orderedDate,
         'reportedDate': formattedDate,
         'status': "Completed",
       });
@@ -192,6 +192,8 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
                             var recipients = customerInfo['phoneNumber'];
 
                             sendMessage(recipients);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
                             Navigator.pop(context);
                             Navigator.pop(context);
                           },

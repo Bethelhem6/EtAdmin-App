@@ -46,6 +46,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Change Password")),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

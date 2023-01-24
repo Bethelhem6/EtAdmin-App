@@ -1,6 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/screens/customer_detail.dart';
 
 class Customer extends StatefulWidget {
@@ -14,67 +13,56 @@ class _CustomerState extends State<Customer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:Text("Customer"),
-      ),
-      body: Container(
-          padding: EdgeInsets.all(5),
-          child:Container(
-            
-            // decoration: BoxDecoration(
-            //   color: Colors.purple,
-            //   borderRadius:BorderRadius.circular(30),
-              
-            //   ) ,
-            height: 100,
-            padding: EdgeInsets.all(5),
-            color: Colors.white,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute( builder: (context) => const CustomerDetail()));
-                },
-                child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   Icon(Icons.person,size: 40,),
-                  SizedBox(width: 30,),
-                  Container(
-                    
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                      Text("Yordanos Daniel",
+        appBar: AppBar(
+          title: const Text("Customer"),
+        ),
+        body: StreamBuilder<QuerySnapshot>(
+            stream:
+                FirebaseFirestore.instance.collection("customers").snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                var doc = snapshot.data!.docs;
+                return ListView(
+                    children: doc.map((doc) {
+                  return ListTile(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CustomerDetail(
+                                  uid: doc['id'],
+                                ))),
+                    leading: const Icon(
+                      Icons.person,
+                      size: 30,
+                    ),
+                    // tileColor: deepPurple[50],
+                    title: Text(
+                      doc['name'],
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      "0${doc['phoneNumber']}",
                       style: TextStyle(
-                        fontSize: 20,
-                      ),),
-                      SizedBox(height: 5,),
-                      Text("yordanos2019@gmail.com",
-                      style: TextStyle(
-                        
-                        color: Colors.grey,
-                      ),),
-                    ]),
-                  ),
-                  SizedBox(width: 50,),
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      
-                      children: [
-                        Text("13/4/2022",
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),),
-                    ]),
-                  )
-                   
-                ],
-                  ),
-              ),
-                
-          )),
-    );
+                        fontSize: 18,
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                    trailing: Text(
+                      doc['joinedDate'],
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  );
+                }).toList());
+              } else if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return Container();
+            }));
   }
 }

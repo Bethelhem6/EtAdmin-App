@@ -51,7 +51,6 @@ class _ProductState extends State<ProductList> {
       appBar: AppBar(
         title: const Text("Product List "),
         centerTitle: true,
-
         backgroundColor: Colors.deepPurple,
       ),
       backgroundColor: Colors.white,
@@ -121,7 +120,73 @@ class _ProductState extends State<ProductList> {
                                           ),
                                         ),
                                       ),
-                                      
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                              onTap: () {
+                                                delete(
+                                                    context,
+                                                    snapshot.data!.docs[index]
+                                                        ['id']);
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: const [
+                                                  Icon(
+                                                    Icons
+                                                        .remove_moderator_outlined,
+                                                    color: Colors.red,
+                                                  ),
+                                                  Text(
+                                                    " Inactive",
+                                                    style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
+                                          const SizedBox(
+                                            width: 20,
+                                          ),
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                  onTap: () {
+                                                    delete(
+                                                        context,
+                                                        snapshot.data!
+                                                            .docs[index]['id']);
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: const [
+                                                      Icon(
+                                                        Icons.edit,
+                                                        color: Colors.blue,
+                                                      ),
+                                                      Text(
+                                                        " Edit",
+                                                        style: TextStyle(
+                                                          fontSize: 17,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.blue,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                   SizedBox(
@@ -172,35 +237,6 @@ class _ProductState extends State<ProductList> {
                                               color: Colors.black,
                                             ),
                                           ),
-                                          GestureDetector(
-                                        
-                                          onTap: () {
-                                            delete(
-                                                context,
-                                                snapshot.data!.docs[index]
-                                                    ['id']);
-                                          },
-                                          child: Container(
-                                      
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.end,
-                                              children: const [
-                                                Icon(
-                                                  Icons.remove_moderator_outlined,
-                                                  color: Colors.red,
-                                                ),
-                                                Text(
-                                                  "Inactive",
-                                                  
-                                                  style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.red,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )),
                                         ]),
                                   ),
                                 ],

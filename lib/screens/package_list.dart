@@ -96,7 +96,7 @@ class _ProductState extends State<PackageList> {
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 25),
+                          margin: const EdgeInsets.symmetric(vertical: 25),
                           child: Column(children: [
                             Card(
                               elevation: 10,
@@ -121,15 +121,81 @@ class _ProductState extends State<PackageList> {
                                           ),
                                         ),
                                       ),
-                                     
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                              onTap: () {
+                                                delete(
+                                                    context,
+                                                    snapshot.data!.docs[index]
+                                                        ['id']);
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: const [
+                                                  Icon(
+                                                    Icons
+                                                        .remove_moderator_outlined,
+                                                    color: Colors.red,
+                                                  ),
+                                                  Text(
+                                                    " Inactive",
+                                                    style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
+                                          const SizedBox(
+                                            width: 20,
+                                          ),
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                  onTap: () {
+                                                    delete(
+                                                        context,
+                                                        snapshot.data!
+                                                            .docs[index]['id']);
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: const [
+                                                      Icon(
+                                                        Icons.edit,
+                                                        color: Colors.blue,
+                                                      ),
+                                                      Text(
+                                                        " Edit",
+                                                        style: TextStyle(
+                                                          fontSize: 17,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.blue,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Container(
-                                    padding:
-                                        EdgeInsets.only(top: 15, bottom: 15),
+                                    padding: const EdgeInsets.only(
+                                        top: 15, bottom: 15),
                                     height: 320,
                                     width: 180,
                                     child: Column(
@@ -172,36 +238,6 @@ class _ProductState extends State<PackageList> {
                                               color: Colors.black,
                                             ),
                                           ),
-                                          
-                                           GestureDetector(
-                                        
-                                          onTap: () {
-                                            delete(
-                                                context,
-                                                snapshot.data!.docs[index]
-                                                    ['id']);
-                                          },
-                                          child: Container(
-                                      
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.end,
-                                              children: const [
-                                                Icon(
-                                                  Icons.remove_moderator_outlined,
-                                                  color: Colors.red,
-                                                ),
-                                                Text(
-                                                  "Inactive",
-                                                  
-                                                  style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.red,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )),
                                         ]),
                                   ),
                                 ],

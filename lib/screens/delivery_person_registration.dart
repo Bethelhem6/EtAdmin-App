@@ -8,9 +8,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/global_methods.dart';
+import 'package:flutter_application_1/screens/assign_delivery_person.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../screens/admin.dart';
+import 'package:uuid/uuid.dart';
 
 class DeliveryPerson extends StatefulWidget {
   static const routeName = '/deliveryperson';
@@ -72,7 +72,7 @@ class _DeliveryPerson extends State<DeliveryPerson> {
         });
         final ref = FirebaseStorage.instance
             .ref()
-            .child('adminImage')
+            .child('deliveryPerson')
             .child('$_fullName.jpg');
         await ref.putFile(_image!);
         _url = await ref.getDownloadURL();
@@ -80,27 +80,29 @@ class _DeliveryPerson extends State<DeliveryPerson> {
         await _auth.createUserWithEmailAndPassword(
             email: _email.toLowerCase().trim(), password: _password.trim());
 
-        final User? user = _auth.currentUser;
-        final uid = user!.uid;
-        FirebaseFirestore.instance.collection('users').doc(uid).set({
+        String uid = Uuid().v4(); // Generate a random UUID
+        setState(() {
+          uid = Uuid().v4();
+        });
+        FirebaseFirestore.instance.collection('delivery person').doc(uid).set({
           'id': uid,
           'name': _fullName,
           'email': _email,
           'phoneNumber': _phoneNumber,
           'imageUrl': _url,
           'joinedDate': formattedDate,
-          'role':'admins'
+          'role': 'deliveryPerson'
           // 'createdAt': TimeStamp.now()
         });
 
         Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: ((context) => const Admin()),
-          ),
-        );
+        // Navigator.pop(context);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: ((context) =>  AssignDeliveryPerson()),
+        //   ),
+        // );
       }
     } catch (e) {
       _globalMethods.showDialogues(context, e.toString());
@@ -132,7 +134,7 @@ class _DeliveryPerson extends State<DeliveryPerson> {
               onTap: () => Navigator.pop(context),
               child: const Icon(Icons.arrow_back_ios)),
           title: const Text(
-            "Delivery Person Registration",
+            "Registration",
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
@@ -154,17 +156,17 @@ class _DeliveryPerson extends State<DeliveryPerson> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 120.0, vertical: 10),
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 20),
                       child: InkWell(
                         onTap: _getImage,
                         child: CircleAvatar(
                           radius: 40,
-                          backgroundColor: Colors.purple.shade500,
+                          backgroundColor: Colors.deepPurple.shade500,
                           backgroundImage:
                               _image == null ? null : FileImage(_image!),
                           child: Icon(
-                            _image == null ? Icons.camera_alt : null,
+                            _image == null ? Icons.photo_camera_outlined : null,
                             color: Colors.white,
                             size: 35,
                           ),
@@ -174,7 +176,6 @@ class _DeliveryPerson extends State<DeliveryPerson> {
                     // SizedBox(
                     //   height: 10,
                     // ),
-                    
                   ],
                 ),
                 const SizedBox(
@@ -194,32 +195,6 @@ class _DeliveryPerson extends State<DeliveryPerson> {
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context)
                             .requestFocus(_numberFocusNode),
-                        key: const ValueKey('id'),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter id';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Id',
-                          // filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          // prefixIcon: const Icon(Icons.person),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      TextFormField(
-                        onSaved: (value) {
-                          _fullName = value!;
-                        },
-                        textInputAction: TextInputAction.next,
-                        onEditingComplete: () => FocusScope.of(context)
-                            .requestFocus(_numberFocusNode),
                         key: const ValueKey('name'),
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -228,6 +203,7 @@ class _DeliveryPerson extends State<DeliveryPerson> {
                           return null;
                         },
                         decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.person),
                           labelText: 'Name',
                           // filled: true,
                           border: OutlineInputBorder(
@@ -236,7 +212,7 @@ class _DeliveryPerson extends State<DeliveryPerson> {
                           // prefixIcon: const Icon(Icons.person),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       TextFormField(
@@ -278,7 +254,6 @@ class _DeliveryPerson extends State<DeliveryPerson> {
                       // confirm(),
 
                       Signup(context),
-                     
                     ],
                   ),
                 ),
@@ -322,7 +297,6 @@ class _DeliveryPerson extends State<DeliveryPerson> {
 
   Widget password() {
     return TextFormField(
-      
       focusNode: _passwordFocusNode,
       onSaved: (value) {
         _password = value!;
@@ -336,23 +310,20 @@ class _DeliveryPerson extends State<DeliveryPerson> {
         }
         return null;
       },
-      
       decoration: InputDecoration(
         labelStyle: const TextStyle(
-        
             fontSize: 18, fontWeight: FontWeight.normal, color: Colors.black),
         labelText: "Password",
         // hintText: "6-digits",
         hintStyle: TextStyle(
             fontSize: 18,
-            
             fontWeight: FontWeight.normal,
             color: Colors.grey[500]),
         // floatingLabelBehavior: FloatingLabelBehavior.always,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        
+
         prefixIcon: const Icon(Icons.lock),
         suffixIcon: IconButton(
           onPressed: () {
@@ -366,26 +337,6 @@ class _DeliveryPerson extends State<DeliveryPerson> {
     );
   }
 
-  // Widget confirm() {
-  //   return TextFormField(
-  //     obscureText: true,
-  //     decoration: InputDecoration(
-  //       labelStyle: const TextStyle(
-  //           fontSize: 18, fontWeight: FontWeight.normal, color: Colors.black),
-  //       labelText: "Confirm Password",
-  //       hintText: "Re-enter password",
-  //       hintStyle: TextStyle(
-  //           fontSize: 18,
-  //           fontWeight: FontWeight.normal,
-  //           color: Colors.grey[500]),
-  //       floatingLabelBehavior: FloatingLabelBehavior.always,
-  //       border: OutlineInputBorder(
-  //         borderRadius: BorderRadius.circular(30),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget Signup(BuildContext context) {
     return _isLoading
         ? const Center(
@@ -398,9 +349,6 @@ class _DeliveryPerson extends State<DeliveryPerson> {
                 borderRadius: BorderRadius.circular(300)),
             child: MaterialButton(
               onPressed: _submitData,
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => ProductMainPage()));
-
               child: const Center(
                 child: Text("Register",
                     style: TextStyle(
@@ -412,6 +360,4 @@ class _DeliveryPerson extends State<DeliveryPerson> {
               ),
             ));
   }
-
-  
 }

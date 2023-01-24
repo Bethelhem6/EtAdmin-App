@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/assign_delivery_person.dart';
 import 'package:flutter_application_1/screens/customer.dart';
 import 'package:flutter_application_1/screens/orderrr.dart';
-import 'package:flutter_application_1/screens/orders_detail.dart';
 import 'package:flutter_application_1/screens/package_list.dart';
 import 'package:flutter_application_1/screens/product_list.dart';
 import 'package:flutter_application_1/screens/reported_orders.dart';
@@ -16,7 +15,6 @@ import '../auth/change_password_page.dart';
 import '../auth/login_admin.dart';
 import 'add_packages.dart';
 import 'add_product.dart';
-import 'customer_detail.dart';
 
 class Admin extends StatefulWidget {
   const Admin({Key? key}) : super(key: key);
@@ -80,10 +78,11 @@ class _AdminState extends State<Admin> {
           ),
         ],
       ),
-      body: _loadScreen(),
+      body: Text("Dashboard"),
+      // _loadScreen(),
       drawer: Drawer(
         width: 250,
-        backgroundColor: Color.fromARGB(255, 175, 138, 159),
+        backgroundColor: Colors.deepPurple.shade100,
         child: ListView(
           children: [
             SizedBox(
@@ -107,14 +106,13 @@ class _AdminState extends State<Admin> {
                         Text(
                           _name,
                           style: const TextStyle(
-                            
                             fontSize: 20,
                             color: Colors.black,
                           ),
                         ),
                         Text(
                           _email,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 15,
                               color: Color.fromARGB(255, 88, 85, 85),
                               fontStyle: FontStyle.italic,
@@ -126,18 +124,15 @@ class _AdminState extends State<Admin> {
                 ),
               ),
             ),
-            const Divider(
-              height: 3,
-              color: Colors.purple,
-            ),
-            
+            // const Divider(
+            //   height: 3,
+            //   color: Colors.purple,
+            // ),
             InkWell(
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Admin()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Admin()));
               },
               child: ListTile(
                 title: const Text("Dashboard"),
@@ -150,10 +145,8 @@ class _AdminState extends State<Admin> {
             InkWell(
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Orders()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Orders()));
               },
               child: ListTile(
                 title: const Text("Orders"),
@@ -195,34 +188,31 @@ class _AdminState extends State<Admin> {
                 ),
               ),
             ),
-           
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AssignDeliveryPerson()));
-              },
-              child: ListTile(
-                title: const Text("Delivery Persons"),
-                leading: Icon(
-                  Icons.person_add_alt_outlined,
-                  color: Colors.deepPurple[800],
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) => const AssignDeliveryPerson()));
+            //   },
+            //   child: ListTile(
+            //     title: const Text("Delivery Persons"),
+            //     leading: Icon(
+            //       Icons.person_add_alt_outlined,
+            //       color: Colors.deepPurple[800],
+            //     ),
+            //   ),
+            // ),
             const Divider(
               height: 3,
               color: Colors.purple,
             ),
-             InkWell(
+            InkWell(
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Customer()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Customer()));
               },
               child: ListTile(
                 title: const Text("Customer"),
@@ -276,247 +266,278 @@ class _AdminState extends State<Admin> {
 
   Widget _loadScreen() {
     return Container(
-        
-        child: GridView.count(
-          
-          crossAxisCount: 2,
-          
+      child: GridView.count(
+        crossAxisCount: 2,
         children: <Widget>[
-          
           Card(
-            margin: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             child: Container(
-             margin: EdgeInsets.all(5),
+              margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                borderRadius:BorderRadius.circular(20),
-                 ),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                   MaterialPageRoute(builder: (context) => const Orders()));
-                        
-                      },
-                      child: Center(
-                        child:Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.shopping_cart_checkout_outlined, 
-                              size: 100,
-                              color: Colors.orange,),
-                            Text("New Orders",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.purple,
-                              ),),
-                        ],) ),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Orders()));
+                },
+                child: Center(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.shopping_cart_checkout_outlined,
+                      size: 100,
+                      color: Colors.orange,
                     ),
+                    Text(
+                      "New Orders",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ],
+                )),
+              ),
             ),
           ),
           Card(
             child: Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                borderRadius:BorderRadius.circular(20),
-                 ),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ReportedOrders()));
-                      },
-                      child: Center(
-                        child:Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.replay_10_outlined, 
-                              size: 100,
-                              color: Colors.orange,),
-                            Text("Replied Orders",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.purple,
-                              ),),
-                        ],) ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReportedOrders()));
+                },
+                child: Center(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.replay_10_outlined,
+                      size: 100,
+                      color: Colors.orange,
                     ),
+                    Text(
+                      "Replied Orders",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ],
+                )),
+              ),
             ),
           ),
           Card(
             child: Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                borderRadius:BorderRadius.circular(20),
-                 ),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const ProductList()));
-                      },
-                      child: Center(
-                        child:Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.change_history, 
-                              size: 100,
-                              color: Colors.orange,),
-                            Text("Product List",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.purple,
-                              ),),
-                        ],) ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductList()));
+                },
+                child: Center(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.change_history,
+                      size: 100,
+                      color: Colors.orange,
                     ),
+                    Text(
+                      "Product List",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ],
+                )),
+              ),
             ),
           ),
           Card(
             child: Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                borderRadius:BorderRadius.circular(20),
-                 ),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                         MaterialPageRoute(builder: (context) => const PackageList()));
-                      },
-                      child: Center(
-                        child:Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.list_alt_outlined, 
-                              size: 100,
-                              color: Colors.orange,),
-                            Text("Package List",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.purple,
-                              ),),
-                        ],) ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PackageList()));
+                },
+                child: Center(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.list_alt_outlined,
+                      size: 100,
+                      color: Colors.orange,
                     ),
+                    Text(
+                      "Package List",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ],
+                )),
+              ),
             ),
           ),
           Card(
             child: Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                borderRadius:BorderRadius.circular(20),
-                 ),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const UploadProducts()));
-                      },
-                      child: Center(
-                        child:Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.add, 
-                              size: 100,
-                              color: Colors.orange,),
-                            Text("Add Single Product",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.purple,
-                              ),),
-                        ],) ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UploadProducts()));
+                },
+                child: Center(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.add,
+                      size: 100,
+                      color: Colors.orange,
                     ),
+                    Text(
+                      "Add Single Product",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ],
+                )),
+              ),
             ),
           ),
           Card(
             child: Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                borderRadius:BorderRadius.circular(20),
-                 ),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const UploadPackages()));
-                      },
-                      child: Center(
-                        child:Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.shopping_basket_outlined, 
-                              size: 100,
-                              color: Colors.orange,),
-                            Text("Add Package",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.purple,
-                              ),),
-                        ],) ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UploadPackages()));
+                },
+                child: Center(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.shopping_basket_outlined,
+                      size: 100,
+                      color: Colors.orange,
                     ),
-            ),
-          ),
-             Card(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius:BorderRadius.circular(20),
-                 ),
-              child: InkWell(
-                      onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => const UploadPackages()));
-                      },
-                      child: Center(
-                        child:Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.delivery_dining_outlined, 
-                              size: 100,
-                              color: Colors.orange,),
-                            Text("Delivered Orders",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.purple,
-                              ),),
-                        ],) ),
+                    Text(
+                      "Add Package",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.purple,
+                      ),
                     ),
+                  ],
+                )),
+              ),
             ),
           ),
           Card(
             child: Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                borderRadius:BorderRadius.circular(20),
-                 ),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: InkWell(
-                      onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => const UploadPackages()));
-                      },
-                      child: Center(
-                        child:Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.reviews, 
-                              size: 100,
-                              color: Colors.orange,),
-                            Text("Reviews",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.purple,
-                              ),),
-                        ],) ),
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => const UploadPackages()));
+                },
+                child: Center(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.delivery_dining_outlined,
+                      size: 100,
+                      color: Colors.orange,
                     ),
+                    Text(
+                      "Delivered Orders",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ],
+                )),
+              ),
+            ),
+          ),
+          Card(
+            child: Container(
+              margin: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: InkWell(
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => const UploadPackages()));
+                },
+                child: Center(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.reviews,
+                      size: 100,
+                      color: Colors.orange,
+                    ),
+                    Text(
+                      "Reviews",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ],
+                )),
+              ),
             ),
           ),
           // const Divider(),
@@ -621,11 +642,7 @@ class _AdminState extends State<Admin> {
           // ),
           // const Divider(),
         ],
-        
-        ),
-        
-      );
-    
+      ),
+    );
   }
-  
 }

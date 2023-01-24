@@ -1,9 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_interpolation_to_compose_strings, must_be_immutable
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class CustomerDetail extends StatefulWidget {
-  const CustomerDetail({super.key});
+  String uid;
+  CustomerDetail({
+    Key? key,
+    required this.uid,
+  }) : super(key: key);
 
   @override
   State<CustomerDetail> createState() => _CustomerDetailState();
@@ -14,179 +18,126 @@ class _CustomerDetailState extends State<CustomerDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Customer Detail"),
+        title: const Text("Customer Detail"),
       ),
-      // body: SingleChildScrollView(
-      //   child:Container(
-      //      padding: EdgeInsets.all(5),
-      //     child: InkWell(
-      //       child: Container(
-      //         decoration: BoxDecoration(
-      //           borderRadius:BorderRadius.circular(20),
-      //           color: Color.fromARGB(255, 236, 196, 226),
-      //            ),
-      //        padding: EdgeInsets.all(10),
-      //         height: 320,
-      //         width: double.infinity,
-      //         color: Color.fromARGB(255, 238, 205, 216),
-      //         child:Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       mainAxisAlignment: MainAxisAlignment.start,
-               
-      //           children: [
-      //             CircleAvatar(
-                    
-      //               radius: 50,
-      //             ),
-      //             SizedBox(height: 5,),
-      //           Text("Customer Information",
-      //           style: TextStyle(
-      //             fontSize: 20,
-      //             fontWeight: FontWeight.bold,
-      //             color: Colors.purple,
-      //           ),),
-      //            SizedBox(height: 5,),
-      //           Text("User name:Yordanos Daniel",
-      //           style: TextStyle(
-      //             fontSize: 15,
-      //             color: Colors.purple,
-      //           ),),
-      //            SizedBox(height: 5,),
-      //           Text("email:yordanos2019@gmail.com",
-      //           style: TextStyle(
-      //             fontSize: 15,
-      //             color: Colors.purple,
-      //           ),),
-      //            SizedBox(height: 5,),
-      //           Text("phone number:0949674981",
-      //           style: TextStyle(
-      //             fontSize: 15,
-      //             color: Colors.purple,
-      //           ),),
-      //            SizedBox(height: 5,),
-      //           Text("Location",
-      //           style: TextStyle(
-      //             fontSize: 20,
-      //             fontWeight: FontWeight.bold,
-      //             color: Colors.purple,
-      //           ),),
-      //            SizedBox(height: 5,),
-      //           Text("City:Addis Ababa",
-      //           style: TextStyle(
-      //             fontSize: 15,
-      //             color: Colors.purple,
-      //           ),),
-      //            SizedBox(height: 5,),
-      //           Text("Subcity:Bolle",
-      //           style: TextStyle(
-      //             fontSize: 15,
-      //             color: Colors.purple,
-      //           ),),
-      //            SizedBox(height: 5,),
-      //           Text("Street:Alem Cinema",
-      //           style: TextStyle(
-      //             fontSize: 15,
-      //             color: Colors.purple,
-      //           ),),
-      //         ],) ),
-      //     ),
-      //   ) ),
       body: SingleChildScrollView(
-        child: Container(
-              padding: const EdgeInsets.all(5),
-               child: Column(
-                
-            
-              mainAxisSize: MainAxisSize.max,
-              children: [
-               
-              InkWell(
-                onTap: (() {
-                 
-                }),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    height: 320,
-                              width: 400,
-                     decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 236, 196, 226),
-                  borderRadius: BorderRadius.circular(20)),
-                              
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(padding: EdgeInsets.all(5)),
-                        CircleAvatar(
-                  
-                          radius: 40,
-                          backgroundColor: Colors.grey,
-                        ),
-                        SizedBox(height: 10,),
-                        Text("Customer Information",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.purple,
-                ),),
-                 SizedBox(height: 5,),
-                Text("User name:Yordanos Daniel",
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.purple,
-                ),),
-                 SizedBox(height: 5,),
-                Text("email:yordanos2019@gmail.com",
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.purple,
-                ),),
-                 SizedBox(height: 5,),
-                Text("phone number:0949674981",
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.purple,
-                ),),
-                 SizedBox(height: 5,),
-                Text("Location",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.purple,
-                ),),
-                 SizedBox(height: 5,),
-                Text("City:Addis Ababa",
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.purple,
-                ),),
-                 SizedBox(height: 5,),
-                Text("Subcity:Bolle",
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.purple,
-                ),),
-                 SizedBox(height: 5,),
-                Text("Street:Alem Cinema",
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.purple,
-                ),),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10,),
-                
-                SizedBox(height: 180,),
-                     
-                  ],
-                  
-                ),
-        ),
+        child: StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection("customers")
+                .doc(widget.uid)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                var doc = snapshot.data!;
 
+                return Column(children: [
+                  SizedBox(
+                      width: double.infinity,
+                      child: Column(children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 30),
+                          alignment: Alignment.center,
+                          child: CircleAvatar(
+                            radius: 80,
+                            backgroundImage: NetworkImage(doc["imageUrl"]),
+                          ),
+                        ),
+                        ListTile(
+                          leading: const Icon(
+                            Icons.person,
+                            size: 30,
+                            color: Colors.deepPurple,
+                          ),
+                          title: const Text(
+                            "Customer Information",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.deepPurple,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Full Name: " + doc['name'],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              Text(
+                                "Email: " + doc['email'],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              Text(
+                                "Phone Number: ${doc['phoneNumber']}",
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ListTile(
+                          leading: const Icon(
+                            Icons.location_on,
+                            size: 30,
+                            color: Colors.deepPurple,
+                          ),
+                          title: const Text(
+                            "Location",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.deepPurple,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "City: " + doc["delivery information"]['city'],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              Text(
+                                "Subcity: " +
+                                    doc["delivery information"]['subCity'],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              Text(
+                                "street: " +
+                                    doc["delivery information"]['street'],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ]))
+                ]);
+              }
+              return const Text("No data");
+            }),
       ),
-     
     );
   }
 }
