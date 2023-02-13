@@ -42,28 +42,11 @@ class _AdminState extends State<Admin> {
   MaterialColor active = Colors.deepPurple;
   MaterialColor notActive = Colors.grey;
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  String _url = "";
-  String _uid = "";
-  String _email = "";
-  String _name = "";
 
-  void _getData() async {
-    User? user = _auth.currentUser;
-    _uid = user!.uid;
-
-    final DocumentSnapshot userDocs =
-        await FirebaseFirestore.instance.collection("users").doc(_uid).get();
-    setState(() {
-      _email = userDocs.get('email');
-      _name = userDocs.get('name');
-      _url = userDocs.get("imageUrl");
-    });
-  }
 
   @override
   void initState() {
-    _getData();
+    // _getData();
     super.initState();
   }
 

@@ -34,7 +34,7 @@ class _OrdersState extends State<Orders> {
           elevation: 0,
         ),
         body: DefaultTabController(
-          length: 3,
+          length: 4,
           child: SizedBox(
               height: double.infinity,
               width: double.infinity,
@@ -55,6 +55,9 @@ class _OrdersState extends State<Orders> {
                           ),
                           Tab(
                             text: "Delivered",
+                          ),
+                          Tab(
+                            text: "Canceled",
                           ),
                         ]),
                   ),
@@ -98,7 +101,8 @@ class _OrdersState extends State<Orders> {
                                 body: kindOfOrders("processing orders"),
                               ),
                         kindOfOrders("completed orders"),
-                        kindOfOrders("delivered orders")
+                        kindOfOrders("delivered orders"),
+                        kindOfOrders("canceled orders")
                       ]),
                     ),
                   ),
