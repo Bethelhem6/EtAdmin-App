@@ -142,7 +142,8 @@ class _Login extends State<Login> {
                         backgroundImage: AssetImage(
                           "assets/logo.jpg",
                         ),
-                        radius: 70,
+                        radius: 60,
+                        
                         backgroundColor: Colors.white,
                       ),
                     ),

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/review_widget.dart';
 
+import '../global_methods.dart';
 import 'add_product.dart';
 
 class ProductList extends StatefulWidget {
@@ -11,6 +13,7 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductState extends State<ProductList> {
+  GlobalMethods _globalMethods = GlobalMethods();
   get width => null;
 
   Future<void> delete(BuildContext context, String id) async {
@@ -50,6 +53,7 @@ class _ProductState extends State<ProductList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Product List "),
+        elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.deepPurple,
       ),
@@ -60,10 +64,11 @@ class _ProductState extends State<ProductList> {
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const UploadProducts(),
+              builder: (context) => UploadProducts(),
             ),
           ),
           child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 15),
             alignment: Alignment.center,
             height: 45,
             color: Colors.purple,
@@ -72,7 +77,7 @@ class _ProductState extends State<ProductList> {
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 25),
+                  fontSize: 20),
             ),
           ),
         ),
@@ -95,7 +100,7 @@ class _ProductState extends State<ProductList> {
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 25),
+                          margin: const EdgeInsets.symmetric(vertical: 20),
                           child: Column(children: [
                             Card(
                               elevation: 10,
@@ -126,32 +131,40 @@ class _ProductState extends State<ProductList> {
                                       Row(
                                         children: [
                                           GestureDetector(
-                                              onTap: () {
-                                                delete(
-                                                    context,
-                                                    snapshot.data!.docs[index]
-                                                        ['id']);
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: const [
-                                                  Icon(
-                                                    Icons
-                                                        .remove_moderator_outlined,
+                                            onTap: () {
+                                              inactiveProduct(
+                                                productId: snapshot
+                                                    .data!.docs[index]['id'],
+                                                image: snapshot
+                                                    .data!.docs[index]['image'],
+                                                title: snapshot
+                                                    .data!.docs[index]['title'],
+                                                description: snapshot.data!
+                                                    .docs[index]['description'],
+                                                price: snapshot
+                                                    .data!.docs[index]['price'],
+                                              );
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: const [
+                                                Icon(
+                                                  Icons
+                                                      .remove_moderator_outlined,
+                                                  color: Colors.red,
+                                                ),
+                                                Text(
+                                                  " Inactive",
+                                                  style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
                                                     color: Colors.red,
                                                   ),
-                                                  Text(
-                                                    " Inactive",
-                                                    style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.red,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           const SizedBox(
                                             width: 20,
                                           ),
@@ -159,10 +172,34 @@ class _ProductState extends State<ProductList> {
                                             children: [
                                               GestureDetector(
                                                   onTap: () {
-                                                    delete(
+                                                    print("edit");
+                                                    Navigator.push(
                                                         context,
-                                                        snapshot.data!
-                                                            .docs[index]['id']);
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                UploadProducts(
+                                                                  image: snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                      ['image'],
+                                                                  id: snapshot
+                                                                          .data!
+                                                                          .docs[
+                                                                      index]['id'],
+                                                                  title: snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                      ['title'],
+                                                                  description: snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                      [
+                                                                      'description'],
+                                                                  price: snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                      ['price'],
+                                                                )));
                                                   },
                                                   child: Row(
                                                     mainAxisAlignment:
@@ -187,15 +224,62 @@ class _ProductState extends State<ProductList> {
                                           ),
                                         ],
                                       ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                              onTap: () {
+                                                print("edit");
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder:
+                                                            (context) =>
+                                                                ReviewsWidget(
+                                                                  productTitle: snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                      ['title'],
+                                                                )));
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: const [
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.orange,
+                                                  ),
+                                                  Text(
+                                                    " View review",
+                                                    style: TextStyle(
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.orange,
+                                                  ),
+                                                ],
+                                              )),
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Container(
-                                    padding:
-                                        EdgeInsets.only(top: 15, bottom: 15),
-                                    height: 340,
+                                    padding: const EdgeInsets.only(
+                                        top: 15, bottom: 15),
+                                    height: 350,
                                     width: 180,
                                     child: Column(
                                         crossAxisAlignment:
@@ -233,6 +317,7 @@ class _ProductState extends State<ProductList> {
                                                 ['description'],
                                             // overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
+                                              overflow: TextOverflow.visible,
                                               fontSize: 15,
                                               color: Colors.black,
                                             ),
@@ -244,6 +329,9 @@ class _ProductState extends State<ProductList> {
                             ),
                           ]),
                         ),
+                        const SizedBox(
+                          height: 20,
+                        )
                         //
                       ],
                     ),
@@ -251,5 +339,34 @@ class _ProductState extends State<ProductList> {
                 });
           }),
     );
+  }
+
+  void inactiveProduct(
+      {required productId,
+      required image,
+      required title,
+      required price,
+      required description}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('inactiveProducts')
+          .doc(productId)
+          .set({
+        'title': title,
+        'description': description,
+        'price': price,
+        'image': image,
+        'id': productId,
+        'createdAt': Timestamp.now()
+      });
+      await FirebaseFirestore.instance
+          .collection("products")
+          .doc(productId)
+          .delete();
+
+      _globalMethods.showDialogues(context, "Product inactived successfully.");
+    } catch (e) {
+      print(e);
+    }
   }
 }

@@ -28,7 +28,10 @@ class _OrdersState extends State<Orders> {
         appBar: AppBar(
           title: const Text(
             "Orders",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
+          centerTitle: true,
+          elevation: 0,
         ),
         body: DefaultTabController(
           length: 3,

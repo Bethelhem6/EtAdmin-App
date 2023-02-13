@@ -1,20 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/review_widget.dart';
 
 import '../global_methods.dart';
 import 'add_packages.dart';
 
-class PackageList extends StatefulWidget {
-  const PackageList({Key? key}) : super(key: key);
+class InactiveProducts extends StatefulWidget {
+  const InactiveProducts({Key? key}) : super(key: key);
 
   @override
-  State<PackageList> createState() => _ProductState();
+  State<InactiveProducts> createState() => _ProductState();
 }
 
-class _ProductState extends State<PackageList> {
-  GlobalMethods _globalMethods = GlobalMethods();
+class _ProductState extends State<InactiveProducts> {
+     GlobalMethods _globalMethods = GlobalMethods();
 
   get width => null;
 
@@ -36,7 +35,7 @@ class _ProductState extends State<PackageList> {
                 onPressed: () async {
                   Navigator.pop(context);
                   await FirebaseFirestore.instance
-                      .collection("packages")
+                      .collection("inactiveProducts")
                       .doc(id)
                       .delete();
                 },
@@ -54,39 +53,17 @@ class _ProductState extends State<PackageList> {
     bool _isLoading = false;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Package List "),
+        title: const Text("Inactive Products"),
         centerTitle: true,
-        elevation: 0,
         backgroundColor: Colors.deepPurple,
       ),
       backgroundColor: Colors.white,
-      bottomSheet: Container(
-        margin: const EdgeInsets.symmetric(vertical: 15),
-        width: double.infinity,
-        child: GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UploadPackages(),
-            ),
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            height: 45,
-            color: Colors.purple,
-            child: const Text(
-              'Add new package',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
-            ),
-          ),
-        ),
-      ),
+     
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           // <2> Pass `Stream<QuerySnapshot>` to stream
-          stream: FirebaseFirestore.instance.collection('packages').snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('inactiveProducts')
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.data == null) {
               return const Center(
@@ -134,19 +111,10 @@ class _ProductState extends State<PackageList> {
                                         children: [
                                           GestureDetector(
                                               onTap: () {
-                                                inactiveProduct(
-                                                  productId: snapshot
-                                                      .data!.docs[index]['id'],
-                                                  image: snapshot.data!
-                                                      .docs[index]['image'],
-                                                  title: snapshot.data!
-                                                      .docs[index]['title'],
-                                                  description:
-                                                      snapshot.data!.docs[index]
-                                                          ['description'],
-                                                  price: snapshot.data!
-                                                      .docs[index]['price'],
-                                                );
+                                                delete(
+                                                    context,
+                                                    snapshot.data!.docs[index]
+                                                        ['id']);
                                               },
                                               child: Row(
                                                 mainAxisAlignment:
@@ -158,7 +126,7 @@ class _ProductState extends State<PackageList> {
                                                     color: Colors.red,
                                                   ),
                                                   Text(
-                                                    " Inactive",
+                                                    " Delete",
                                                     style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
@@ -176,33 +144,19 @@ class _ProductState extends State<PackageList> {
                                               GestureDetector(
                                                   onTap: () {
                                                     print("edit");
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                UploadPackages(
-                                                                  image: snapshot
-                                                                          .data!
-                                                                          .docs[index]
-                                                                      ['image'],
-                                                                  id: snapshot
-                                                                          .data!
-                                                                          .docs[
-                                                                      index]['id'],
-                                                                  title: snapshot
-                                                                          .data!
-                                                                          .docs[index]
-                                                                      ['title'],
-                                                                  description: snapshot
-                                                                          .data!
-                                                                          .docs[index]
-                                                                      [
-                                                                      'description'],
-                                                                  price: snapshot
-                                                                          .data!
-                                                                          .docs[index]
-                                                                      ['price'],
-                                                                )));
+                                                    activateProduct(
+                                                      image: snapshot.data!
+                                                          .docs[index]['image'],
+                                                      id: snapshot.data!
+                                                          .docs[index]['id'],
+                                                      title: snapshot.data!
+                                                          .docs[index]['title'],
+                                                      description: snapshot
+                                                              .data!.docs[index]
+                                                          ['description'],
+                                                      price: snapshot.data!
+                                                          .docs[index]['price'],
+                                                    );
                                                   },
                                                   child: Row(
                                                     mainAxisAlignment:
@@ -210,70 +164,21 @@ class _ProductState extends State<PackageList> {
                                                     children: const [
                                                       Icon(
                                                         Icons.edit,
-                                                        color: Colors.blue,
+                                                        color: Colors.orange,
                                                       ),
                                                       Text(
-                                                        " Edit",
+                                                        " Activate",
                                                         style: TextStyle(
                                                           fontSize: 17,
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          color: Colors.blue,
+                                                          color: Colors.orange,
                                                         ),
                                                       ),
                                                     ],
                                                   )),
                                             ],
                                           ),
-                                        ],
-                                        
-                                      ),
-
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          GestureDetector(
-                                              onTap: () {
-                                                print("edit");
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder:
-                                                            (context) =>
-                                                                ReviewsWidget(
-                                                                  productTitle: snapshot
-                                                                          .data!
-                                                                          .docs[index]
-                                                                      ['title'],
-                                                                )));
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: const [
-                                                  Icon(
-                                                    Icons.star,
-                                                    color: Colors.orange,
-                                                  ),
-                                                  Text(
-                                                    " View review",
-                                                    style: TextStyle(
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.blue,
-                                                    ),
-                                                  ),
-                                                  Icon(
-                                                    Icons.star,
-                                                    color: Colors.orange,
-                                                  ),
-                                                ],
-                                              )),
                                         ],
                                       ),
                                     ],
@@ -284,7 +189,7 @@ class _ProductState extends State<PackageList> {
                                   Container(
                                     padding: const EdgeInsets.only(
                                         top: 15, bottom: 15),
-                                    height: 320,
+                                    height: 350,
                                     width: 180,
                                     child: Column(
                                         crossAxisAlignment:
@@ -344,32 +249,34 @@ class _ProductState extends State<PackageList> {
     );
   }
 
-  void inactiveProduct(
-      {required productId,
-      required image,
+  void activateProduct(
+      {required image,
+      required id,
       required title,
-      required price,
-      required description}) async {
-    try {
+      required description,
+      required price}) async{
+
+
+        try {
       await FirebaseFirestore.instance
-          .collection('inactiveProducts')
-          .doc(productId)
+          .collection('products')
+          .doc(id)
           .set({
         'title': title,
         'description': description,
         'price': price,
         'image': image,
-        'id': productId,
+        'id': id,
         'createdAt': Timestamp.now()
       });
       await FirebaseFirestore.instance
-          .collection("packages")
-          .doc(productId)
+          .collection("inactiveProducts")
+          .doc(id)
           .delete();
-
-      _globalMethods.showDialogues(context, "Product inactived successfully.");
+      
+          _globalMethods.showDialogues(context, "Product activated successfully.");
     } catch (e) {
       print(e);
     }
-  }
+      }
 }

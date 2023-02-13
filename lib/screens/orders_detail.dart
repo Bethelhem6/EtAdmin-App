@@ -111,7 +111,7 @@ class _OrderScreenState extends State<OrderDetailScreen> {
 
                         return Column(children: [
                           Container(
-                            height: 350,
+                            height: 270,
                             margin: const EdgeInsets.only(bottom: 60),
                             child: ListView.builder(
                               itemCount: sections != null ? sections.length : 0,
@@ -226,7 +226,7 @@ class _OrderScreenState extends State<OrderDetailScreen> {
                           ),
                           Container(
                             color: Colors.purple[100],
-                            height: 350,
+                            height: 400,
                             width: double.infinity,
                             child: Column(
                               children: [

@@ -12,8 +12,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadPackages extends StatefulWidget {
-  const UploadPackages({Key? key}) : super(key: key);
-
+  String? title;
+  String? id;
+  String? image;
+  var price;
+  String? description;
+  UploadPackages(
+      {Key? key, this.description, this.price, this.title, this.image, this.id})
+      : super(key: key);
   @override
   State<UploadPackages> createState() => _UploadProductsState();
 }
@@ -56,17 +62,33 @@ class _UploadProductsState extends State<UploadPackages> {
         final packageId = uuid.v4();
         // final User? user = _auth.currentUser;
         // final _uid = user!.uid;
-        FirebaseFirestore.instance.collection('packages').doc(packageId).set({
-          'title': _packageTitle,
-          'description': _packageDescription,
-          'price': _packagePrice,
-          'image': _url,
-          'id': packageId,
-          'createdAt': Timestamp.now()
-        });
-
-        Navigator.pop(context);
-        _globalMethods.showDialogues(context, "Successfully Added.");
+        if (widget.id != null) {
+          print(widget.title);
+         await FirebaseFirestore.instance
+              .collection('packages')
+              .doc(widget.id)
+              .update({
+            'title': _packageTitle,
+            'description': _packageDescription,
+            'price': _packagePrice,
+            'image': _url,
+            'id': widget.id,
+            'createdAt': Timestamp.now()
+          });
+          Navigator.pop(context);
+          _globalMethods.showDialogues(context, "Successfully Added.");
+        } else {
+          await FirebaseFirestore.instance.collection('packages').doc(packageId).set({
+            'title': _packageTitle,
+            'description': _packageDescription,
+            'price': _packagePrice,
+            'image': _url,
+            'id': packageId,
+            'createdAt': Timestamp.now()
+          });
+          Navigator.pop(context);
+          _globalMethods.showDialogues(context, "Successfully Added.");
+        }
       }
     } catch (e) {
       _globalMethods.showDialogues(context, e.toString());
@@ -118,7 +140,8 @@ class _UploadProductsState extends State<UploadPackages> {
         title: const Text("Add New Packages"),
         elevation: 0,
       ),
-      bottomSheet: SizedBox(
+      bottomSheet: Container(
+        margin: const EdgeInsets.symmetric(vertical: 15),
         width: double.infinity,
         child: GestureDetector(
           onTap: _trySubmit,
@@ -207,6 +230,7 @@ class _UploadProductsState extends State<UploadPackages> {
                   Column(
                     children: [
                       TextFormField(
+                        initialValue: widget.title,
                         key: const ValueKey('title'),
                         validator: (val) {
                           if (val!.isEmpty) {
@@ -219,8 +243,8 @@ class _UploadProductsState extends State<UploadPackages> {
                           fillColor: Colors.white,
                           filled: true,
                           labelText: 'Title',
-                          labelStyle:
-                              const TextStyle(color: Colors.black, fontSize: 18),
+                          labelStyle: const TextStyle(
+                              color: Colors.black, fontSize: 18),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -231,6 +255,7 @@ class _UploadProductsState extends State<UploadPackages> {
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
+                        initialValue: widget.price,
                         key: const ValueKey('price'),
                         validator: (val) {
                           if (val!.isEmpty) {
@@ -246,8 +271,8 @@ class _UploadProductsState extends State<UploadPackages> {
                           fillColor: Colors.white,
                           filled: true,
                           labelText: 'Price Birr',
-                          labelStyle:
-                              const TextStyle(color: Colors.black, fontSize: 18),
+                          labelStyle: const TextStyle(
+                              color: Colors.black, fontSize: 18),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -261,6 +286,7 @@ class _UploadProductsState extends State<UploadPackages> {
 
                   const SizedBox(height: 15),
                   TextFormField(
+                      initialValue: widget.description,
                       key: const ValueKey('Description'),
                       validator: (value) {
                         if (value!.isEmpty) {

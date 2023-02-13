@@ -1,15 +1,18 @@
 //// ignore_for_file: deprecated_member_use, duplicate_ignore, prefer_final_fields, avoid_print
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/assign_delivery_person.dart';
 import 'package:flutter_application_1/screens/customer.dart';
+import 'package:flutter_application_1/screens/home.dart';
+import 'package:flutter_application_1/screens/inactive_products.dart';
 import 'package:flutter_application_1/screens/orderrr.dart';
 import 'package:flutter_application_1/screens/package_list.dart';
 import 'package:flutter_application_1/screens/product_list.dart';
 import 'package:flutter_application_1/screens/reported_orders.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../auth/change_password_page.dart';
 import '../auth/login_admin.dart';
@@ -25,6 +28,17 @@ class Admin extends StatefulWidget {
 }
 
 class _AdminState extends State<Admin> {
+  int currentIndex = 0;
+
+  List<Widget> _screens() {
+    return [
+      const HomeHeader(),
+      const Orders(),
+      const ProductList(),
+      const InactiveProducts(),
+    ];
+  }
+
   MaterialColor active = Colors.deepPurple;
   MaterialColor notActive = Colors.grey;
 
@@ -53,596 +67,66 @@ class _AdminState extends State<Admin> {
     super.initState();
   }
 
+  List<PersistentBottomNavBarItem> NavBarItems() {
+    return [
+      PersistentBottomNavBarItem(
+          icon: const Icon(Icons.home),
+          title: 'Home',
+          activeColorPrimary: Colors.deepPurple,
+          inactiveColorPrimary: Colors.deepPurple[200]),
+      PersistentBottomNavBarItem(
+          icon: const Icon(Icons.shopping_bag_outlined),
+          title: 'Orders',
+          activeColorPrimary: Colors.orange,
+          inactiveColorPrimary: Colors.deepPurple[200]),
+      PersistentBottomNavBarItem(
+          icon: const Icon(Icons.list),
+          title: 'Products',
+          activeColorPrimary: Colors.teal,
+          inactiveColorPrimary: Colors.deepPurple[200]),
+      PersistentBottomNavBarItem(
+          icon: const Icon(Icons.local_activity_rounded),
+          title: 'Inactive',
+          activeColorPrimary: Colors.red,
+          inactiveColorPrimary: Colors.deepPurple[200]),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Admin"),
-        centerTitle: true,
-        elevation: 0.0,
-        actions: [
-          GestureDetector(
-            onTap: () {
-              _auth.signOut();
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Login()),
-              );
-              print("signed out");
-            },
-            child: Container(
-              margin: const EdgeInsets.only(right: 25),
-              child: const Icon(Icons.logout),
-            ),
-          ),
-        ],
-      ),
-      body: Text("Dashboard"),
-      // _loadScreen(),
-      drawer: Drawer(
-        width: 250,
-        backgroundColor: Colors.deepPurple.shade100,
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 200,
-              child: DrawerHeader(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        _url,
-                      ),
-                      radius: 50,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          _name,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          _email,
-                          style: const TextStyle(
-                              fontSize: 15,
-                              color: Color.fromARGB(255, 88, 85, 85),
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // const Divider(
-            //   height: 3,
-            //   color: Colors.purple,
-            // ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Admin()));
-              },
-              child: ListTile(
-                title: const Text("Dashboard"),
-                leading: Icon(
-                  Icons.dashboard,
-                  color: Colors.deepPurple[800],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Orders()));
-              },
-              child: ListTile(
-                title: const Text("Orders"),
-                leading: Icon(
-                  Icons.shopping_cart_checkout_outlined,
-                  color: Colors.deepPurple[800],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PackageList()));
-              },
-              child: ListTile(
-                title: const Text("Package List"),
-                leading: Icon(
-                  Icons.list_alt_outlined,
-                  color: Colors.deepPurple[800],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProductList()));
-              },
-              child: ListTile(
-                title: const Text("Product List"),
-                leading: Icon(
-                  Icons.list_sharp,
-                  color: Colors.deepPurple[800],
-                ),
-              ),
-            ),
-            // InkWell(
-            //   onTap: () {
-            //     Navigator.pop(context);
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //             builder: (context) => const AssignDeliveryPerson()));
-            //   },
-            //   child: ListTile(
-            //     title: const Text("Delivery Persons"),
-            //     leading: Icon(
-            //       Icons.person_add_alt_outlined,
-            //       color: Colors.deepPurple[800],
-            //     ),
-            //   ),
-            // ),
-            const Divider(
-              height: 3,
-              color: Colors.purple,
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Customer()));
-              },
-              child: ListTile(
-                title: const Text("Customer"),
-                leading: Icon(
-                  Icons.person,
-                  color: Colors.deepPurple[800],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ChangePassword()));
-              },
-              child: ListTile(
-                title: const Text("Change Password"),
-                leading: Icon(
-                  Icons.key,
-                  color: Colors.deepPurple[800],
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () async {},
-              child: ListTile(
-                onTap: (() async {
-                  await _auth.signOut();
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Login()),
-                  );
-                }),
-                title: const Text("Log out"),
-                leading: Icon(
-                  Icons.logout,
-                  color: Colors.deepPurple[800],
-                ),
-              ),
-            ),
-          ],
+      body: PersistentTabView(
+        // backgroundColor: Colors.grey.shade100,
+        context,
+        items: NavBarItems(),
+        screens: _screens(),
+        confineInSafeArea: true,
+        handleAndroidBackButtonPress: true, // Default is true.
+        resizeToAvoidBottomInset:
+            true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+        stateManagement: true, // Default is true.
+        hideNavigationBarWhenKeyboardShows:
+            true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+        decoration: NavBarDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          colorBehindNavBar: Colors.white,
         ),
+        popAllScreensOnTapOfSelectedTab: true,
+        popActionScreens: PopActionScreensType.all,
+        itemAnimationProperties: const ItemAnimationProperties(
+          // Navigation Bar's items animation properties.
+          duration: Duration(milliseconds: 200),
+          curve: Curves.ease,
+        ),
+        screenTransitionAnimation: const ScreenTransitionAnimation(
+          // Screen transition animation on change of selected tab.
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
+        ),
+        navBarStyle: NavBarStyle.style3,
       ),
-    );
-  }
-
-  Widget _loadScreen() {
-    return Container(
-      child: GridView.count(
-        crossAxisCount: 2,
-        children: <Widget>[
-          Card(
-            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            child: Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Orders()));
-                },
-                child: Center(
-                    child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.shopping_cart_checkout_outlined,
-                      size: 100,
-                      color: Colors.orange,
-                    ),
-                    Text(
-                      "New Orders",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.purple,
-                      ),
-                    ),
-                  ],
-                )),
-              ),
-            ),
-          ),
-          Card(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ReportedOrders()));
-                },
-                child: Center(
-                    child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.replay_10_outlined,
-                      size: 100,
-                      color: Colors.orange,
-                    ),
-                    Text(
-                      "Replied Orders",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.purple,
-                      ),
-                    ),
-                  ],
-                )),
-              ),
-            ),
-          ),
-          Card(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProductList()));
-                },
-                child: Center(
-                    child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.change_history,
-                      size: 100,
-                      color: Colors.orange,
-                    ),
-                    Text(
-                      "Product List",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.purple,
-                      ),
-                    ),
-                  ],
-                )),
-              ),
-            ),
-          ),
-          Card(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PackageList()));
-                },
-                child: Center(
-                    child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.list_alt_outlined,
-                      size: 100,
-                      color: Colors.orange,
-                    ),
-                    Text(
-                      "Package List",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.purple,
-                      ),
-                    ),
-                  ],
-                )),
-              ),
-            ),
-          ),
-          Card(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const UploadProducts()));
-                },
-                child: Center(
-                    child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.add,
-                      size: 100,
-                      color: Colors.orange,
-                    ),
-                    Text(
-                      "Add Single Product",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.purple,
-                      ),
-                    ),
-                  ],
-                )),
-              ),
-            ),
-          ),
-          Card(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const UploadPackages()));
-                },
-                child: Center(
-                    child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.shopping_basket_outlined,
-                      size: 100,
-                      color: Colors.orange,
-                    ),
-                    Text(
-                      "Add Package",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.purple,
-                      ),
-                    ),
-                  ],
-                )),
-              ),
-            ),
-          ),
-          Card(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: InkWell(
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) => const UploadPackages()));
-                },
-                child: Center(
-                    child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.delivery_dining_outlined,
-                      size: 100,
-                      color: Colors.orange,
-                    ),
-                    Text(
-                      "Delivered Orders",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.purple,
-                      ),
-                    ),
-                  ],
-                )),
-              ),
-            ),
-          ),
-          Card(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: InkWell(
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) => const UploadPackages()));
-                },
-                child: Center(
-                    child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.reviews,
-                      size: 100,
-                      color: Colors.orange,
-                    ),
-                    Text(
-                      "Reviews",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.purple,
-                      ),
-                    ),
-                  ],
-                )),
-              ),
-            ),
-          ),
-          // const Divider(),
-          // ListTile(
-          //   leading: Stack(
-          //     children: const [
-          //       Positioned(
-          //         child: Icon(
-          //           Icons.shopping_cart_checkout_outlined,
-          //           color: Colors.red,
-          //         ),
-          //       ),
-          //       // Positioned(
-          //       //   top: 0,
-          //       //   right: 0,
-          //       //   child: Text(
-          //       //     "2",
-          //       //     style: TextStyle(
-          //       //         color: Colors.red,
-          //       //         fontWeight: FontWeight.bold,
-          //       //         fontSize: 18),
-          //       //   ),
-          //       // ),
-          //     ],
-          //   ),
-          //   title: const Text("New Orders"),
-          //   onTap: () {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (context) => const OrderScreen()));
-          //   },
-          // ),
-          // ListTile(
-          //   leading: const Icon(
-          //     Icons.replay,
-          //     color: Colors.purple,
-          //   ),
-          //   title: const Text("Replied Orders"),
-          //   onTap: () {
-          //     Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //             builder: (context) => const ReportedOrders()));
-          //   },
-          // ),
-          // const Divider(
-          //   height: 2,
-          //   color: Colors.deepPurpleAccent,
-          // ),
-          // ListTile(
-          //   leading: const Icon(
-          //     Icons.shopping_basket_outlined,
-          //     color: Colors.orange,
-          //   ),
-          //   title: const Text("Add new product packages"),
-          //   onTap: () {
-          //     Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //             builder: (context) => const UploadPackages()));
-          //   },
-          // ),
-          // const Divider(),
-          // ListTile(
-          //   leading: const Icon(
-          //     Icons.add,
-          //     color: Colors.teal,
-          //   ),
-          //   title: const Text("Add new single product"),
-          //   onTap: () {
-          //     Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //             builder: (context) => const UploadProducts()));
-          //   },
-          // ),
-          // const Divider(
-          //   height: 2,
-          //   color: Colors.deepPurpleAccent,
-          // ),
-          // ListTile(
-          //   leading: const Icon(
-          //     Icons.change_history,
-          //     color: Colors.brown,
-          //   ),
-          //   title: const Text("Products list"),
-          //   onTap: () {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (context) => const ProductList()));
-          //   },
-          // ),
-          // const Divider(),
-          // ListTile(
-          //   leading: const Icon(
-          //     Icons.list,
-          //     color: Colors.pinkAccent,
-          //   ),
-          //   title: const Text("Package list"),
-          //   onTap: () {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (context) => const PackageList()));
-          //   },
-          // ),
-          // const Divider(),
-        ],
-      ),
+     
     );
   }
 }

@@ -2,9 +2,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/auth/auth_screen.dart';
-
-
-
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,10 +18,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
-      home: AuthStateScreen(),
+     theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+          textTheme: TextTheme(
+            bodyMedium: GoogleFonts.cormorantGaramond(),
+            bodyLarge: GoogleFonts.cormorantGaramond(),
+          ),
+        ),
+      home: const AuthStateScreen(),
     );
   }
 }
