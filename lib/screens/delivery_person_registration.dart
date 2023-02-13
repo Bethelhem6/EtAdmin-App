@@ -80,10 +80,8 @@ class _DeliveryPerson extends State<DeliveryPerson> {
         await _auth.createUserWithEmailAndPassword(
             email: _email.toLowerCase().trim(), password: _password.trim());
 
-        String uid = Uuid().v4(); // Generate a random UUID
-        setState(() {
-          uid = Uuid().v4();
-        });
+       final User? user = _auth.currentUser;
+        final uid = user!.uid;
         FirebaseFirestore.instance.collection('delivery person').doc(uid).set({
           'id': uid,
           'name': _fullName,

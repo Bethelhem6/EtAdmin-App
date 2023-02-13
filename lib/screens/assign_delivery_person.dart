@@ -172,7 +172,6 @@ class ListofDeliveryPerson extends StatelessWidget {
                               //     .delete();
                               print("successfully Assigned");
                              
-                              // ignore: use_build_context_synchronously
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

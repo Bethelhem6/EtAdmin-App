@@ -19,12 +19,12 @@ class AuthStateScreen extends StatelessWidget {
           if (snapshot.hasData) {
             return const Admin();
           } else {
-            return const Login();
+            return const WelcomeScreen();
           }
         } else if (snapshot.hasError) {
           return const Text('Error Occured');
         }
-        return const WelcomeScreen();
+        return const Login();
       },
     );
   }
