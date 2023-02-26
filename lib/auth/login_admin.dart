@@ -9,7 +9,6 @@ import 'package:flutter_application_1/global_methods.dart';
 
 import '../screens/admin.dart';
 
-
 class Login extends StatefulWidget {
   static const routeName = '/login';
 
@@ -136,15 +135,15 @@ class _Login extends State<Login> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
+                      alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 80.0, vertical: 10.0),
                       child: const CircleAvatar(
-                        backgroundImage: AssetImage(
-                          "assets/logo.jpg",
-                        ),
-                        radius: 60,
-                        
                         backgroundColor: Colors.white,
+                        radius: 70,
+                        child: Image(
+                          image: AssetImage("assets/logo.jpg"),
+                        ),
                       ),
                     ),
                     const Text(
@@ -323,8 +322,8 @@ class _Login extends State<Login> {
                 fontSize: 15, color: Colors.blue, fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const Signup()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Signup()));
           },
         ),
       ],

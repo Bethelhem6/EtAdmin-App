@@ -42,6 +42,7 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
       String name,
       String phoneNumber,
       String email,
+      String userId,
       String city,
       String subCity,
       String street,
@@ -64,6 +65,7 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
           // 'userId': _uid,
           'name': name,
           'email': email,
+          'userId': userId,
           'phoneNumber': phoneNumber,
         },
         "delivery information": {
@@ -181,6 +183,7 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
                                 customerInfo['name'],
                                 customerInfo['phoneNumber'].toString(),
                                 customerInfo['email'],
+                                customerInfo['userId'],
                                 deliveryinfo['city'],
                                 deliveryinfo['subCity'],
                                 deliveryinfo['street'],
@@ -195,7 +198,7 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
                             Navigator.pop(context);
                             Navigator.pop(context);
                             Navigator.pop(context);
-                            Navigator.pop(context);
+                           
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),

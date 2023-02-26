@@ -15,6 +15,8 @@ class _CustomerState extends State<Customer> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Customer"),
+          centerTitle: true,
+          elevation: 0,
         ),
         body: StreamBuilder<QuerySnapshot>(
             stream:

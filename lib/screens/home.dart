@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/admin.dart';
+import 'package:flutter_application_1/screens/orders_detail.dart';
 import 'package:flutter_application_1/screens/package_list.dart';
 import 'package:flutter_application_1/screens/product_list.dart';
 
@@ -66,18 +67,14 @@ class _HomeHeaderState extends State<HomeHeader> {
         iconTheme: const IconThemeData(color: Colors.deepPurple),
         backgroundColor: Colors.white,
         title: Image.asset(
-          "assets/logo.jpg",
-          // height: 100,
-          // width: 120,
+          "assets/head.jpg",
+          height: 100,
+          width: 170,
         ),
         elevation: 0,
         centerTitle: true,
       ),
-      body: Column(
-        children: const [
-          Expanded(child: Text("Dashboard")),
-        ],
-      ),
+      body: Orders(),
       drawer: Drawer(
         width: 250,
         backgroundColor: Colors.deepPurple.shade100,
@@ -120,46 +117,6 @@ class _HomeHeaderState extends State<HomeHeader> {
                 ),
               ),
             ),
-            // const Divider(
-            //   height: 3,
-            //   color: Colors.purple,
-            // ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Admin()));
-              },
-              child: ListTile(
-                title: const Text("Dashboard",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15)),
-                leading: Icon(
-                  Icons.dashboard,
-                  color: Colors.deepPurple[800],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Orders()));
-              },
-              child: ListTile(
-                title: const Text("Orders",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15)),
-                leading: Icon(
-                  Icons.shopping_cart_checkout_outlined,
-                  color: Colors.orange[800],
-                ),
-              ),
-            ),
             InkWell(
               onTap: () {
                 Navigator.pop(context);
@@ -176,7 +133,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                         fontSize: 15)),
                 leading: Icon(
                   Icons.list_alt_outlined,
-                  color: Colors.pinkAccent[800],
+                  color: Colors.deepPurple[800],
                 ),
               ),
             ),
@@ -220,7 +177,6 @@ class _HomeHeaderState extends State<HomeHeader> {
                 ),
               ),
             ),
-
             const Divider(
               height: 3,
               color: Colors.purple,
@@ -261,7 +217,6 @@ class _HomeHeaderState extends State<HomeHeader> {
                 color: Colors.orange[800],
               ),
             ),
-
             GestureDetector(
               onTap: () async {},
               child: ListTile(

@@ -1,23 +1,10 @@
 //// ignore_for_file: deprecated_member_use, duplicate_ignore, prefer_final_fields, avoid_print
 
-// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/customer.dart';
 import 'package:flutter_application_1/screens/home.dart';
 import 'package:flutter_application_1/screens/inactive_products.dart';
-import 'package:flutter_application_1/screens/orderrr.dart';
-import 'package:flutter_application_1/screens/package_list.dart';
 import 'package:flutter_application_1/screens/product_list.dart';
-import 'package:flutter_application_1/screens/reported_orders.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
-import '../auth/change_password_page.dart';
-import '../auth/login_admin.dart';
-import 'add_packages.dart';
-import 'add_product.dart';
 
 class Admin extends StatefulWidget {
   const Admin({Key? key}) : super(key: key);
@@ -33,7 +20,6 @@ class _AdminState extends State<Admin> {
   List<Widget> _screens() {
     return [
       const HomeHeader(),
-      const Orders(),
       const ProductList(),
       const InactiveProducts(),
     ];
@@ -41,8 +27,6 @@ class _AdminState extends State<Admin> {
 
   MaterialColor active = Colors.deepPurple;
   MaterialColor notActive = Colors.grey;
-
-
 
   @override
   void initState() {
@@ -53,14 +37,9 @@ class _AdminState extends State<Admin> {
   List<PersistentBottomNavBarItem> NavBarItems() {
     return [
       PersistentBottomNavBarItem(
-          icon: const Icon(Icons.home),
-          title: 'Home',
-          activeColorPrimary: Colors.deepPurple,
-          inactiveColorPrimary: Colors.deepPurple[200]),
-      PersistentBottomNavBarItem(
-          icon: const Icon(Icons.shopping_bag_outlined),
+          icon: const Icon(Icons.shopping_bag),
           title: 'Orders',
-          activeColorPrimary: Colors.orange,
+          activeColorPrimary: Colors.deepPurple,
           inactiveColorPrimary: Colors.deepPurple[200]),
       PersistentBottomNavBarItem(
           icon: const Icon(Icons.list),
@@ -109,7 +88,6 @@ class _AdminState extends State<Admin> {
         ),
         navBarStyle: NavBarStyle.style3,
       ),
-     
     );
   }
 }

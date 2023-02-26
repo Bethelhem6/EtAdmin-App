@@ -377,9 +377,9 @@ class _OrderScreenState extends State<OrderDetailScreen> {
                                     ],
                                   ),
                                 ),
-                                // SizedBox(
-                                //   height: 30,
-                                // ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
                                 (widget.collection) == "processing orders"
                                     ? GestureDetector(
                                         onTap: () {
@@ -396,7 +396,7 @@ class _OrderScreenState extends State<OrderDetailScreen> {
                                           margin:
                                               const EdgeInsets.only(top: 10),
                                           alignment: Alignment.center,
-                                          height: 45,
+                                          height: 50,
                                           color: Colors.purple,
                                           child: const Text(
                                             'Assign Delivery Person',
